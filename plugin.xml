@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+<name>PunctuationSmarten</name>
+<type>edit</type>
+<author>DiapDealer</author>
+<description>Convert quotes and dashes to their typographic equivalents.</description>
+<engine>python3.4</engine>
+<engine>python2.7</engine>
+<version>0.3.0</version>
+<oslist>osx,unx,win</oslist>
+</plugin>
