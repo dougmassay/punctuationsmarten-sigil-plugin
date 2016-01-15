@@ -19,7 +19,6 @@ First, clone the repo and cd into it:
 
     $ git clone https://github.com/dougmassay/punctuationsmarten-sigil-plugin.git
     $ cd ./punctuationsmarten-sigil-plugin
-    $ python getkucore.py
     $ cd ..
 
 To create the plugin zip file, run the buildplugin.py script (root of the repository tree) with Python (2 or 3)
