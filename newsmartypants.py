@@ -380,7 +380,7 @@ default_smartypants_attr = "1"
 apos_words_list = []
 AMP = ''
 
-import os
+
 try:
     import regex as re
 except ImportError:
@@ -602,12 +602,12 @@ def educateQuotes(str):
 
     """Do the words beginning with an apostrophe - in apos_exception.txt file"""
     if apos_words_list:
-        #One on each line - WITHOUT the apostrophe
+        # One on each line - WITHOUT the apostrophe
         try:
-            #with open(os.path.normpath(apos_exceptions_file),'rb') as fd:
+            # with open(os.path.normpath(apos_exceptions_file),'rb') as fd:
             #    apos_words_list = [line.strip() for line in fd]
             for entry in apos_words_list:
-                str = re.sub(r"'("+entry+")\\b", '%s\\1' % r"""&#8217;""", str) #, flags=re.I)
+                str = re.sub(r"'("+entry+")\\b", '%s\\1' % r"""&#8217;""", str)  # , flags=re.I)
         except:
             print("Error processing apostrophe exceptions list!")
             pass
@@ -818,7 +818,7 @@ def educateEllipses(str):
     """
 
     str = re.sub(r"""\.\.\.""", r"""&#8230;""", str)
-    #str = re.sub(r"""\. \. \.""", r"""&#8230;""", str)
+    # str = re.sub(r"""\. \. \.""", r"""&#8230;""", str)
     str = re.sub(r"""\.\p{Zs}\.\p{Zs}\.""", r"""&#8230;""", str, flags=re.UNICODE)
     return str
 

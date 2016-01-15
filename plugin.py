@@ -6,7 +6,6 @@ from __future__ import unicode_literals, division, absolute_import, print_functi
 import os
 import sys
 import inspect
-import ntpath
 import codecs
 import re
 
@@ -98,7 +97,7 @@ def unescape(text):
             except KeyError:
                 print('KeyError')
                 pass
-        return text # leave as is
+        return text  # leave as is
     return re.sub("&#?\w+;", fixup, text)
 
 class guiMain(tkinter.Frame):
@@ -324,7 +323,7 @@ def parseExceptionsFile(filename):
     try:
         with file_open(pathof(safename), 'r', encoding=enc) as fd:
             words_list = [line.rstrip() for line in fd]
-        #words_list = filter(None, words_list)
+        # words_list = filter(None, words_list)
         words_list = [_f for _f in words_list if _f]
         print('Parsing apostrophe exception file %s' % filename)
     except:
@@ -340,7 +339,7 @@ def run(bk):
     # Or use defaults if json doesn't yet exist
     prefs.defaults['gui_selections'] = gui_selections
     prefs.defaults['miscellaneous_settings'] = miscellaneous_settings
-    
+
     root = tkinter.Tk()
     root.title('')
     root.resizable(True, True)
@@ -356,29 +355,29 @@ def run(bk):
         apos_words_list = []
         if CRITERIA['apos_exception_file'] is not None and len(CRITERIA['files']):
             apos_words_list = parseExceptionsFile(CRITERIA['apos_exception_file'])
-            
+
         for html_file in CRITERIA['files']:
             id = bk.href_to_id(html_file)
             html = bk.readfile(id)
 
             if not isinstance(html, text_type):
-               html = text_type(html, 'utf-8')
-    
+                html = text_type(html, 'utf-8')
+
             html_orig = html
-    
+
             html = html.replace('<!--', START)
             html = html.replace('-->', STOP)
             # Slightly mangle all preexisting entities so HTMLParser
             # ignores them. We'll put them all back at the end.
             html = html.replace('&', AMPERSAND)
-    
+
             html = smartyPants(html, CRITERIA['smarty_attr'], AMPERSAND, apos_words_list)
             html = html.replace(START, '<!--')
             html = html.replace(STOP, '-->')
-    
+
             if CRITERIA['use_unicode']:
-               # Convert the entities we created to unicode characters
-               html = unescape(html)
+                # Convert the entities we created to unicode characters
+                html = unescape(html)
             # Unmangle the pre-existing entities
             html = html.replace(AMPERSAND, '&')
             if not html == html_orig:
@@ -389,7 +388,7 @@ def run(bk):
                 print ('No changes made to %s.' % html_file)
         if NO_CHANGE:
             print('No files were altered')
-    
+
     return 0
 
 def main():
