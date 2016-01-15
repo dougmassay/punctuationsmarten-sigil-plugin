@@ -57,29 +57,43 @@ def removePreviousTmp(rmzip=False):
     if os.path.exists(TEMP_DIR) and os.path.isdir(TEMP_DIR):
         shutil.rmtree(TEMP_DIR)
 
-    if rmzip:  # Remove zip file if indicated
+    if rmzip:  # Remove zip file if indicated.
         print ('Removing any current zip file ...')
         if os.path.exists(ARCHIVE_NAME):
             os.remove(ARCHIVE_NAME)
+
+def ignore_in_dirs(base, items, ignored_dirs=None):
+    ans = []
+    if ignored_dirs is None:
+        ignored_dirs = {'.git', '__pycache__'}
+    for name in items:
+        path = os.path.join(base, name)
+        if os.path.isdir(path):
+            if name in ignored_dirs:
+                ans.append(name)
+        else:
+            if name.rpartition('.')[-1] in ('pyc', 'pyo'):
+                ans.append(name)
+    return ans
 
 if __name__ == "__main__":
     print('Removing any previous build leftovers ...')
     removePreviousTmp(rmzip=True)
 
-    # Copy everything to temp directory
-    print ('Creating temp build directory ...')
+    print ('Creating temp {} directory ...'.format(PLUGIN_NAME))
     os.mkdir(TEMP_DIR)
 
-    files = os.listdir(SCRIPT_DIR)
+    print ('Copying everything to temp {} directory ...'.format(PLUGIN_NAME))
+    for entry in PLUGIN_FILES:
+        entry_path = os.path.join(SCRIPT_DIR, entry)
+        if os.path.exists(entry_path) and os.path.isdir(entry_path):
+            shutil.copytree(entry_path, os.path.join(TEMP_DIR, entry), ignore=ignore_in_dirs)
+        elif os.path.exists(entry_path) and os.path.isfile(entry_path):
+            shutil.copy2(entry_path, os.path.join(TEMP_DIR, entry))
+        else:
+            sys.exit('Couldn\'t copy necessary plugin files!')
 
-    print ('Copying plugin files to temporary build directory ...')
-    try:
-        for entry in PLUGIN_FILES:
-            shutil.copy2(os.path.join(SCRIPT_DIR, entry), os.path.join(TEMP_DIR, entry))
-    except:
-        sys.exit('Couldn\'t copy necessary plugin files!')
-
-    print ('Creating {} ...'.format(os.path.basename(ARCHIVE_NAME)))
+    print ('Creating {} ...'.format(os.path.basename(PLUGIN_NAME)))
     outzip = zipfile.ZipFile(ARCHIVE_NAME, 'w')
     zipUpDir(outzip, SCRIPT_DIR, os.path.basename(TEMP_DIR))
     outzip.close()
