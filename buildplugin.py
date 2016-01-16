@@ -20,6 +20,7 @@ TEMP_DIR = os.path.join(SCRIPT_DIR, PLUGIN_NAME)
 PLUGIN_FILES = ['newsmartypants.py',
             'plugin.py',
             'plugin.xml',
+            'updatecheck.py',
             'utilities.py']
 
 def findVersion():

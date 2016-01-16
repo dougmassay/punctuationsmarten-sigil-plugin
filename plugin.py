@@ -8,9 +8,11 @@ import sys
 import inspect
 import codecs
 import re
+from datetime import datetime, timedelta
 
 from uuid import uuid4
 from newsmartypants import smartyPants
+from updatecheck import UpdateChecker
 
 
 from compatibility_utils import PY2, unicode_str, utf8_str
@@ -50,6 +52,12 @@ gui_selections = {
 miscellaneous_settings = {
     'windowGeometry': None,
     'lastDir': expanduser('~'),
+}
+
+update_settings = {
+    'last_time_checked' : str(datetime.now() - timedelta(hours=7)),
+    'last_online_version' : '0.1.0',
+    'url' : 'https://raw.githubusercontent.com/dougmassay/punctuationsmarten-sigil-plugin/master/checkversion.xml'
 }
 
 
@@ -108,6 +116,7 @@ class guiMain(tkinter.Frame):
 
         self.gui_prefs = prefs['gui_selections']
         self.misc_prefs = prefs['miscellaneous_settings']
+        self.update_prefs = prefs['update_settings']
 
         if self.misc_prefs['windowGeometry'] is None:
             # Sane geometry defaults
@@ -269,6 +278,7 @@ class guiMain(tkinter.Frame):
         indices = self.filelist.curselection()
         CRITERIA['files'] = [self.filelist.get(index) for index in indices]
 
+        self.check_for_update()
         self.quitApp()
 
     def fileChooser(self):
@@ -286,6 +296,20 @@ class guiMain(tkinter.Frame):
             self.cust_file_path.insert(0, os.path.normpath(inpath))
             self.misc_prefs['lastDir'] = pathof(os.path.dirname(inpath))
             self.cust_file_path.config(state="readonly")
+
+    def check_for_update(self):
+        url = self.update_prefs['url']
+        last_time_checked = self.update_prefs['last_time_checked']
+        last_online_version = self.update_prefs['last_online_version']
+        chk = UpdateChecker(url, last_time_checked, last_online_version, self.bk._w)
+        update_available, online_version, time = chk.update_info()
+        # update preferences with latest date/time
+        self.update_prefs['last_time_checked'] = time
+        print(update_available, online_version, time)
+        if online_version is not None:
+            self.update_prefs['last_online_version'] = online_version
+        if update_available:
+            print('Update to {}'.format(online_version))
 
     def quitApp(self):
         global prefs
@@ -309,6 +333,7 @@ class guiMain(tkinter.Frame):
         # copy preferences settings groups pack to global dict
         prefs['gui_selections'] = self.gui_prefs
         prefs['miscellaneous_settings'] = self.misc_prefs
+        prefs['update_settings'] = self.update_prefs
 
         self.parent.destroy()
         self.quit()
@@ -351,6 +376,7 @@ def run(bk):
     # Or use defaults if json doesn't yet exist
     prefs.defaults['gui_selections'] = gui_selections
     prefs.defaults['miscellaneous_settings'] = miscellaneous_settings
+    prefs.defaults['update_settings'] = update_settings
 
     root = tkinter.Tk()
     root.title('')
