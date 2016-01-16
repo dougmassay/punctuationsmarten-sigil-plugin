@@ -9,5 +9,5 @@
 <version>0.3.1</version>
 <oslist>osx,unx,win</oslist>
 <autostart>true</autostart>
-<autoclose>true</autoclose>
+<autoclose>false</autoclose>
 </plugin>

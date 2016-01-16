@@ -193,10 +193,22 @@ class guiMain(tkinter.Frame):
         self.filelist = tkinter.Listbox(filelist_frame, yscrollcommand=scrollbar.set, selectmode=tkinter_constants.EXTENDED)
         scrollbar.config(command=self.filelist.yview)
         scrollbar.pack(side=tkinter_constants.RIGHT, fill=tkinter_constants.Y)
+        selected_indices = []
+        listboxindex = 0
         for (id, href) in self.bk.text_iter():
             self.filelist.insert(tkinter_constants.END, href)
+            # bk.selected_iter() is not available on older versions of Sigil
+            # The files selected in the Book Browser will not be pre-selected if so.
+            selected_op = getattr(self.bk, "selected_iter", None)
+            if callable(selected_op):
+                if href in [self.bk.id_to_href(ident) for typ, ident in selected_op()]:
+                    selected_indices.append(listboxindex)
+            listboxindex += 1
         self.filelist.pack(side=tkinter_constants.LEFT, fill=tkinter_constants.BOTH, expand=1)
         filelist_frame.pack(side=tkinter_constants.TOP, fill=tkinter_constants.BOTH)
+        # Pre-select files that were selected in Sigil's Book Browser
+        for index in selected_indices:
+            self.filelist.selection_set(index)
 
         buttons = tkinter.Frame(body)
         buttons.pack(side=tkinter_constants.BOTTOM, fill=tkinter_constants.BOTH)

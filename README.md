@@ -45,6 +45,7 @@ The core plugin files (this is where most contributors will spend their time) ar
 Files used for building/maintaining the plugin:
 
     > buildplugin.py  -- this is used to build the plugin.
+    > checkversion.xml -- used by automatic update checking (not yet implemented).
     > setup.cfg -- used for flake8 style checking. Use it to see if your code complies.
 
 Feel free to fork the repository and submit pull requests (or just use it privately to experiment).
