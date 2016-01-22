@@ -26,6 +26,7 @@ if PY2:
     import ttk as tkinter_ttk
     import Tkconstants as tkinter_constants
     import tkFileDialog as tkinter_filedialog
+    import tkMessageBox as tkinter_msgbox
     text_type = unicode
     characterize = unichr
 else:
@@ -34,30 +35,31 @@ else:
     import tkinter.ttk as tkinter_ttk
     import tkinter.constants as tkinter_constants
     import tkinter.filedialog as tkinter_filedialog
+    import tkinter.messagebox as tkinter_msgbox
     text_type = str
     characterize = chr
 
 SCRIPT_DIR = os.path.normpath(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))))
 PLUGIN_NAME = os.path.split(SCRIPT_DIR)[-1]
+HOME_URL = 'http://www.mobileread.com/forums/showthread.php?t=247088'
 
 gui_selections = {
-    'educateQuotes': 1,
-    'dashes': 1,
-    'educateEllipses': 1,
-    'useFile': 0,
-    'useFilePath': '',
-    'useUnicodeChars': 1,
+    'educateQuotes'   : 1,
+    'dashes'          : 1,
+    'educateEllipses' : 1,
+    'useFile'         : 0,
+    'useFilePath'     : '',
+    'useUnicodeChars' : 1,
 }
 
 miscellaneous_settings = {
-    'windowGeometry': None,
-    'lastDir': expanduser('~'),
+    'windowGeometry' : None,
+    'lastDir'        : expanduser('~'),
 }
 
 update_settings = {
-    'last_time_checked' : str(datetime.now() - timedelta(hours=7)),
+    'last_time_checked'   : str(datetime.now() - timedelta(hours=7)),
     'last_online_version' : '0.1.0',
-    'url' : 'https://raw.githubusercontent.com/dougmassay/punctuationsmarten-sigil-plugin/master/checkversion.xml'
 }
 
 
@@ -117,6 +119,7 @@ class guiMain(tkinter.Frame):
         self.gui_prefs = prefs['gui_selections']
         self.misc_prefs = prefs['miscellaneous_settings']
         self.update_prefs = prefs['update_settings']
+        self.update, self.newversion = self.check_for_update()
 
         if self.misc_prefs['windowGeometry'] is None:
             # Sane geometry defaults
@@ -229,6 +232,8 @@ class guiMain(tkinter.Frame):
         self.qbutton.pack(side=tkinter_constants.RIGHT, fill=tkinter_constants.X, expand=1)
 
         self.parent.geometry(self.misc_prefs['windowGeometry'])
+        if self.update:
+            self.update_msgbox()
 
     def chkBoxActions(self):
         if self.use_file.get():
@@ -278,7 +283,6 @@ class guiMain(tkinter.Frame):
         indices = self.filelist.curselection()
         CRITERIA['files'] = [self.filelist.get(index) for index in indices]
 
-        self.check_for_update()
         self.quitApp()
 
     def fileChooser(self):
@@ -297,19 +301,23 @@ class guiMain(tkinter.Frame):
             self.misc_prefs['lastDir'] = pathof(os.path.dirname(inpath))
             self.cust_file_path.config(state="readonly")
 
+    def update_msgbox(self):
+        title = 'Plugin Update Available'
+        msg = 'Version {} of the {} plugin is now available.'.format(self.newversion, PLUGIN_NAME)
+        tkinter_msgbox.showinfo(title, msg)
+
     def check_for_update(self):
-        url = self.update_prefs['url']
         last_time_checked = self.update_prefs['last_time_checked']
         last_online_version = self.update_prefs['last_online_version']
-        chk = UpdateChecker(url, last_time_checked, last_online_version, self.bk._w)
+        chk = UpdateChecker(last_time_checked, last_online_version, self.bk._w)
         update_available, online_version, time = chk.update_info()
-        # update preferences with latest date/time
+        # update preferences with latest date/time/version
         self.update_prefs['last_time_checked'] = time
-        print(update_available, online_version, time)
         if online_version is not None:
             self.update_prefs['last_online_version'] = online_version
         if update_available:
-            print('Update to {}'.format(online_version))
+            return (True, online_version)
+        return (False, online_version)
 
     def quitApp(self):
         global prefs
@@ -382,6 +390,7 @@ def run(bk):
     root.title('')
     root.resizable(True, True)
     root.minsize(400, 425)
+    root.option_add('*font', 'Helvetica -12')
     guiMain(root, bk).pack(fill=tkinter_constants.BOTH, expand=True)
     root.mainloop()
 
