@@ -11,6 +11,7 @@ import socket
 from datetime import datetime, timedelta
 
 url = 'https://raw.githubusercontent.com/dougmassay/punctuationsmarten-sigil-plugin/master/checkversion.xml'
+delta = 12
 
 
 def string_to_date(datestring):
@@ -30,7 +31,7 @@ class UpdateChecker():
     self.w                  : bk._w from plugin.py
     '''
     def __init__(self, lasttimechecked, lastonlineversion, w):
-        self.delta = 12
+        self.delta = delta
         self.url = url
         self.lasttimechecked = string_to_date(lasttimechecked)  # back to datetieme object
         self.lastonlineversion = lastonlineversion
@@ -40,7 +41,8 @@ class UpdateChecker():
         try:
             # connect to the host -- tells us if the host is reachable
             # 8.8.8.8 is a Google nameserver
-            socket.create_connection(('8.8.8.8', 53), 1)
+            sock = socket.create_connection(('8.8.8.8', 53), 1)
+            sock.close()
             return True
         except:
             pass
@@ -100,7 +102,7 @@ def main():
             w.plugin_name = 'PunctuationSmarten'
             w.plugin_dir = '/home/dmassay/.local/share/sigil-ebook/sigil/plugins'
 
-    tmedt = str(datetime.now() - timedelta(hours=7))
+    tmedt = str(datetime.now() - timedelta(hours=delta+1))
     version = '0.1.0'
     sim_w = w()
     chk = UpdateChecker(tmedt, version, sim_w)
