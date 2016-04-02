@@ -687,6 +687,15 @@ def educateQuotes(str):
             """ % (close_class,), re.VERBOSE | re.UNICODE)
     str = closing_single_quotes_regex.sub(r"""\1&#8217;\2""", str)
 
+    # Added by Doug {
+    closing_single_quotes_regex = re.compile(r"""
+            #(%s)?   # character that indicates the quote should be closing
+            '
+            (?=\p{Zs})
+            """ % (close_class,), re.VERBOSE | re.UNICODE)
+    str = closing_single_quotes_regex.sub(r"""&#8217;""", str)
+    # }
+
     # Any remaining single quotes should be opening ones:
     str = re.sub(r"""'""", r"""&#8216;""", str)
 
