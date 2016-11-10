@@ -5,6 +5,8 @@ Smarten "dumb" punctuation in Sigil
 
 A Sigil plugin wrapped for the SmartPants software (Python based software to smarten punctuation).
 
+**NOTE: this plugin periodically checks for updated versions by connecting to this Github repository**
+
 Links
 =====
 
