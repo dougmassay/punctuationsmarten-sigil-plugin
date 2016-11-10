@@ -11,6 +11,7 @@ Links
 =====
 
 * Sigil website is at http://sigil-ebook.com
+* The SmartenPunctuation plugin support thread on Mobileread <http://www.mobileread.com/forums/showthread.php?t=247088>
 * The Python SmartyPants software can be found at http://web.chad.org/projects/smartypants.py/
 
 
