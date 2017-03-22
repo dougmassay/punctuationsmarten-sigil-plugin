@@ -27,9 +27,9 @@ First, clone the repo and cd into it:
 To create the plugin zip file, run the buildplugin.py script (root of the repository tree) with Python (2 or 3)
 
     $python buildplugin.py
-    
+
 This will create the PunctuationSmarten_vX.X.X.zip file that can then be installed into Sigil's plugin manager.
-    
+
 Contributing / Modifying
 ============
 From here on out, a proficiency with developing / creating Sigil plugins is assumed.
@@ -44,7 +44,7 @@ The core plugin files (this is where most contributors will spend their time) ar
     > plugin.xml
     > utilities.py
 
-    
+
 Files used for building/maintaining the plugin:
 
     > buildplugin.py  -- this is used to build the plugin.
@@ -58,11 +58,11 @@ Feel free to fork the repository and submit pull requests (or just use it privat
 License Information
 =======
 
-###PunctuationSmarten (a Sigil plugin)
+### PunctuationSmarten (a Sigil plugin)
 
     Licensed under the GPLv3.
 
-###SmartyPants (http://web.chad.org/projects/smartypants.py/)
+### SmartyPants (http://web.chad.org/projects/smartypants.py/)
 
     Copyright (c) 2003 John Gruber
     (http://daringfireball.net/)
