@@ -604,8 +604,6 @@ def educateQuotes(str):
     if apos_words_list:
         # One on each line - WITHOUT the apostrophe
         try:
-            # with open(os.path.normpath(apos_exceptions_file),'rb') as fd:
-            #    apos_words_list = [line.strip() for line in fd]
             for entry in apos_words_list:
                 str = re.sub(r"'("+entry+")\\b", '%s\\1' % r"""&#8217;""", str)  # , flags=re.I)
         except:
@@ -903,7 +901,8 @@ def _tokenize(str):
     # match = r"""(?: <! ( -- .*? -- \s* )+ > ) |  # comments
     # (?: <\? .*? \?> ) |  # directives
     # %s  # nested tags       """ % (nested_tags,)
-    tag_soup = re.compile(r"""([^<]*)(<[^>]*>)""")
+    # tag_soup = re.compile(r"""([^<]*)(<[^>]*>)""")
+    tag_soup = re.compile(r"""([^<]*)(<!--.*?--\s*>|<[^>]*>)""", re.S)
 
     token_match = tag_soup.search(str)
 
@@ -912,7 +911,13 @@ def _tokenize(str):
         if token_match.group(1):
             tokens.append(['text', token_match.group(1)])
 
-        tokens.append(['tag', token_match.group(2)])
+        tag = token_match.group(2)
+        type_ = 'tag'
+        if tag.startswith('<!--'):
+            # remove --[white space]> from the end of tag
+            if '--' in tag[4:].rstrip('>').rstrip().rstrip('-'):
+                type_ = 'text'
+        tokens.append([type_, tag])
 
         previous_end = token_match.end()
         token_match = tag_soup.search(str, token_match.end())

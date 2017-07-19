@@ -24,9 +24,9 @@ First, clone the repo and cd into it:
     $ cd ./punctuationsmarten-sigil-plugin
     $ cd ..
 
-To create the plugin zip file, run the buildplugin.py script (root of the repository tree) with Python (2 or 3)
+To create the plugin zip file, run the buildplugin script (root of the repository tree) with Python (2 or 3)
 
-    $python buildplugin.py
+    $ ./buildplugin
 
 This will create the PunctuationSmarten_vX.X.X.zip file that can then be installed into Sigil's plugin manager.
 
@@ -47,7 +47,7 @@ The core plugin files (this is where most contributors will spend their time) ar
 
 Files used for building/maintaining the plugin:
 
-    > buildplugin.py  -- this is used to build the plugin.
+    > buildplugin  -- this is used to build the plugin.
     > checkversion.xml -- used by automatic update checking (not yet implemented).
     > setup.cfg -- used for flake8 style checking. Use it to see if your code complies.
 

@@ -64,8 +64,6 @@ update_settings = {
 
 
 AMPERSAND = 'ampersand'+str(uuid4())
-START = 'comment-start-'+str(uuid4())
-STOP = 'comment-stop-'+str(uuid4())
 
 CRITERIA = {}
 prefs = {}
@@ -264,7 +262,7 @@ class guiMain(tkinter.Frame):
             if len(self.cust_file_path.get()):
                 apos_exception_file = self.cust_file_path.get()
                 if not unipath.exists(utf8_str(apos_exception_file)):
-                    print ('Apostrophe exception file %s does not exist!' % apos_exception_file)
+                    print('Apostrophe exception file %s does not exist!' % apos_exception_file)
                     apos_exception_file = None
             else:
                 apos_exception_file = None
@@ -412,15 +410,11 @@ def run(bk):
 
             html_orig = html
 
-            html = html.replace('<!--', START)
-            html = html.replace('-->', STOP)
             # Slightly mangle all preexisting entities so HTMLParser
             # ignores them. We'll put them all back at the end.
             html = html.replace('&', AMPERSAND)
 
             html = smartyPants(html, CRITERIA['smarty_attr'], AMPERSAND, apos_words_list)
-            html = html.replace(START, '<!--')
-            html = html.replace(STOP, '-->')
 
             if CRITERIA['use_unicode']:
                 # Convert the entities we created to unicode characters
@@ -432,15 +426,16 @@ def run(bk):
                 bk.writefile(id, html)
                 print('Changes made to %s' % html_file)
             else:
-                print ('No changes made to %s.' % html_file)
+                print('No changes made to %s.' % html_file)
         if NO_CHANGE:
             print('No files were altered')
 
     return 0
 
 def main():
-    print ('I reached main when I should not have\n')
+    print('I reached main when I should not have\n')
     return -1
+
 
 if __name__ == "__main__":
     sys.exit(main())
