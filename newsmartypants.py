@@ -397,7 +397,7 @@ def verify_installation(request):
 
 
 def cb_story(args):
-    global default_smartypants_attr
+    global default_smartypants_attr  # noqa F824
 
     try:
         forbidden_flavours = args["entry"]["smartypants_forbidden_flavours"]
@@ -564,13 +564,13 @@ def smartyPants(text, attr=default_smartypants_attr, ampersand='', words_list=No
                 if do_quotes != "0":
                     if t == "'":
                         # Special case: single-character ' token
-                        if re.match("\S", prev_token_last_char):
+                        if re.match(r"\S", prev_token_last_char):
                             t = "&#8217;"
                         else:
                             t = "&#8216;"
                     elif t == '"':
                         # Special case: single-character " token
-                        if re.match("\S", prev_token_last_char):
+                        if re.match(r"\S", prev_token_last_char):
                             t = "&#8221;"
                         else:
                             t = "&#8220;"
@@ -653,7 +653,7 @@ def educateQuotes(str):
     # str = re.sub(r"""^'(?=\s)""", r"""&#8216;""", str)
 
     close_class = r"""[^\ \t\r\n\[\{\(\-]"""
-    dec_dashes = r"""%s#8211;|%s#8212;""".format(AMP, AMP)
+    dec_dashes = fr"""{AMP}#8211;|{AMP}#8212;"""  # .format(AMP, AMP)
 
     # Get most opening single quotes:
     opening_single_quotes_regex = re.compile(r"""

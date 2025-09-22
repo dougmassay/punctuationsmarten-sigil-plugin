@@ -5,8 +5,7 @@
 <author>DiapDealer</author>
 <description>Convert quotes and dashes to their typographic equivalents.</description>
 <engine>python3.4</engine>
-<engine>python2.7</engine>
-<version>0.3.3</version>
+<version>0.6.0</version>
 <oslist>osx,unx,win</oslist>
 <autostart>true</autostart>
 <autoclose>false</autoclose>
