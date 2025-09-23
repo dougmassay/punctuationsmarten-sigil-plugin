@@ -16,10 +16,9 @@ from plugin_utils_light import iswindows
 
 from dialogs import guiMain
 
+DEBUG = 0
 
 AMPERSAND = 'ampersand'+str(uuid4())
-
-# CRITERIA = {}
 
 
 def parseExceptionsFile(filename):
@@ -47,7 +46,7 @@ def parseExceptionsFile(filename):
         # words_list = filter(None, words_list)
         words_list = [_f for _f in words_list if _f]
         print(f'Parsing apostrophe exception file {filename}')
-    except:
+    except Exception:
         print(f'Error parsing apostrophe exception file {filename}: ignoring')
         words_list = []
     return words_list
@@ -63,7 +62,8 @@ def run(bk):
 
     NO_CHANGE = True
     if len(CRITERIA):
-        print(CRITERIA)
+        if DEBUG:
+            print(CRITERIA)
         apos_words_list = []
         if CRITERIA['apos_exception_file'] is not None:
             apos_words_list = parseExceptionsFile(CRITERIA['apos_exception_file'])

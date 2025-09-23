@@ -39,6 +39,7 @@ http://www.mobileread.com/forums/showthread.php?t=251452.
 
 The core plugin files (this is where most contributors will spend their time) are:
 
+    > dialogs.py
     > newsmartypants.py
     > plugin.py
     > plugin.xml

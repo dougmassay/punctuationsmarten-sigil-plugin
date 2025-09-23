@@ -30,7 +30,7 @@ import sys
 
 e = os.environ.get('SIGIL_QT_RUNTIME_VERSION', '6.2.2')
 SIGIL_QT_MAJOR_VERSION = tuple(map(int, (e.split("."))))[0]
-DEBUG = 1
+DEBUG = 0
 
 from PySide6.QtGui import QPalette, QColor, QIcon  # noqa: F401,E402
 from PySide6.QtWidgets import QApplication, QStyleFactory  # noqa: F401, E402

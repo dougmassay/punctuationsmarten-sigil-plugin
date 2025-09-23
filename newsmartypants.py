@@ -606,7 +606,7 @@ def educateQuotes(str):
         try:
             for entry in apos_words_list:
                 str = re.sub(r"'("+entry+")\\b", '%s\\1' % r"""&#8217;""", str)  # , flags=re.I)
-        except:
+        except Exception:
             print("Error processing apostrophe exceptions list!")
             pass
 

@@ -14,6 +14,7 @@ from utilities import UpdateChecker, setupPrefs, PLUGIN_NAME
 from plugin_utils_light import PluginApplication
 from plugin_utils_light import _t
 
+DEBUG = 1
 
 class SquareButton(QPushButton):
     def __init__(self, text, parent=None):
@@ -102,9 +103,7 @@ class guiMain(QDialog):
         self.file_list.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.file_list.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.file_list.setTextElideMode(Qt.ElideLeft)
-        # policy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
-        # self.file_list.setSizePolicy(policy)
-        # self.file_list.setSizeAdjustPolicy(QListWidget.AdjustToContents)
+
         for (id, href) in self.bk.text_iter():
             item = QListWidgetItem(href)
             self.file_list.addItem(item)
@@ -138,7 +137,8 @@ class guiMain(QDialog):
             startfolder = self.misc_prefs['lastDir']
         inpath, _ = QFileDialog.getOpenFileName(self, title, startfolder, options=options)
         if len(inpath):
-            print(inpath)
+            if DEBUG:
+                print(inpath)
             self.aposfile_txt.setEnabled(True)
             self.aposfile_txt.setText(os.path.normpath(inpath))
             self.misc_prefs['lastDir'] = os.path.dirname(inpath)
@@ -229,7 +229,9 @@ class guiMain(QDialog):
             self.prep_criteria()
             self.bk.savePrefs(self.prefs)
             event.accept()  # let the window close
-            print('Close event accepted')
+            if DEBUG:
+                print('Close event accepted')
         else:
-            print('Close event rejected')
+            if DEBUG:
+                print('Close event rejected')
             self.reject()
