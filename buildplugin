@@ -23,7 +23,9 @@ PLUGIN_FILES = ['dialogs.py',
             'plugin.xml',
             'plugin_utils_light.py',
             'updatecheck.py',
-            'utilities.py']
+            'utilities.py',
+            'plugin.svg',
+            'plugin.png']
 
 def findVersion():
     _version_pattern = re.compile(r'<version>([^<]*)</version>')

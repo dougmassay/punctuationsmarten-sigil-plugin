@@ -52,8 +52,9 @@ def parseExceptionsFile(filename):
     return words_list
 
 def run(bk):
+    icon = os.path.join(bk._w.plugin_dir, bk._w.plugin_name, 'plugin.svg')
     mdp = True if iswindows else False
-    app = PluginApplication(sys.argv, bk, match_dark_palette=mdp)
+    app = PluginApplication(sys.argv, bk, app_icon=icon, match_dark_palette=mdp)
     w = guiMain()  # noqa F841
     app.exec()
 

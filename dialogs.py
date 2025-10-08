@@ -31,6 +31,7 @@ class guiMain(QDialog):
         super().__init__()
 
         app = PluginApplication.instance()
+        self.setWindowTitle(_t('guiMain', 'PunctuationSmarten'))
         self.bk = app.bk
         self.CRITERIA = {}
         self.prefs = setupPrefs(app.bk.getPrefs())
